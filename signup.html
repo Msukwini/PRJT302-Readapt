@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Readapt{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Create an Account</h2>
+            <p>Join thousands of learners on Readapt</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('signup') }}" id="signupForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+                <div id="password-strength" style="margin-top: 5px; font-size: 0.8rem;"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                <div id="password-match" style="margin-top: 5px; font-size: 0.8rem;"></div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="terms" required>
+                    I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="newsletter">
+                    Send me product updates and learning tips
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--light-gray);">
+            <p style="color: var(--gray); margin-bottom: 15px;">Or sign up with</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn btn-outline" style="flex: 1;">
+                    <i class="fab fa-google"></i> Google
+                </button>
+                <button class="btn btn-outline" style="flex: 1;">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordStrength = document.getElementById('password-strength');
+        const passwordMatch = document.getElementById('password-match');
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            let feedback = '';
+
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/\d/)) strength++;
+            if (password.match(/[^a-zA-Z\d]/)) strength++;
+
+            switch(strength) {
+                case 0:
+                case 1:
+                    feedback = '<span style="color: var(--danger);">Weak password</span>';
+                    break;
+                case 2:
+                    feedback = '<span style="color: var(--warning);">Medium password</span>';
+                    break;
+                case 3:
+                    feedback = '<span style="color: var(--success);">Strong password</span>';
+                    break;
+                case 4:
+                    feedback = '<span style="color: var(--success);">Very strong password</span>';
+                    break;
+            }
+
+            return feedback;
+        }
+
+        function checkPasswordMatch() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (confirmPassword === '') {
+                passwordMatch.innerHTML = '';
+            } else if (password === confirmPassword) {
+                passwordMatch.innerHTML = '<span style="color: var(--success);">✓ Passwords match</span>';
+            } else {
+                passwordMatch.innerHTML = '<span style="color: var(--danger);">✗ Passwords do not match</span>';
+            }
+        }
+
+        passwordInput.addEventListener('input', function() {
+            passwordStrength.innerHTML = checkPasswordStrength(this.value);
+            checkPasswordMatch();
+        });
+
+        confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+    });
+</script>
+{% endblock %}

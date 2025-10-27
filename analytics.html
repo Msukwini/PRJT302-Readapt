@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Analytics - Readapt{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h2>Your Learning Analytics</h2>
+        <p>Detailed insights into your learning patterns and knowledge gaps</p>
+    </div>
+
+    <div class="analytics-grid">
+        <div class="card">
+            <h3>Knowledge Gaps</h3>
+            <div class="knowledge-gaps">
+                <div class="knowledge-gap">
+                    <div class="gap-header">
+                        <span class="gap-name">Recursion Concepts</span>
+                        <span class="gap-percent">40%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="knowledge-gap">
+                    <div class="gap-header">
+                        <span class="gap-name">Time Complexity</span>
+                        <span class="gap-percent">65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="knowledge-gap">
+                    <div class="gap-header">
+                        <span class="gap-name">Dynamic Programming</span>
+                        <span class="gap-percent">30%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                </div>
+                <div class="knowledge-gap">
+                    <div class="gap-header">
+                        <span class="gap-name">Graph Algorithms</span>
+                        <span class="gap-percent">55%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 55%"></div>
+                    </div>
+                </div>
+                <div class="knowledge-gap">
+                    <div class="gap-header">
+                        <span class="gap-name">Object-Oriented Design</span>
+                        <span class="gap-percent">75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Learning Patterns</h3>
+            <div class="learning-patterns">
+                <div class="pattern-item">
+                    <div class="pattern-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h4>Learning Progress Over Time</h4>
+                        <p>You learn best with visual examples and hands-on practice. Your comprehension improves by 45% with visual aids.</p>
+                    </div>
+                </div>
+                <div class="pattern-item">
+                    <div class="pattern-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div>
+                        <h4>Retention Patterns</h4>
+                        <p>Your retention improves with spaced repetition. Optimal review intervals: 1 day, 3 days, 1 week.</p>
+                    </div>
+                </div>
+                <div class="pattern-item">
+                    <div class="pattern-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h4>Optimal Study Times</h4>
+                        <p>You're most productive in morning hours (8 AM - 12 PM). Focus duration: 45-50 minutes per session.</p>
+                    </div>
+                </div>
+                <div class="pattern-item">
+                    <div class="pattern-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h4>Cognitive Load</h4>
+                        <p>You handle complex concepts better when broken into smaller chunks with practical examples.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Weekly Progress</h3>
+        <div class="progress-section">
+            <div class="progress-card">
+                <div class="progress-value">12h</div>
+                <div class="progress-label">Study Time</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">24</div>
+                <div class="progress-label">Lessons Completed</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">87%</div>
+                <div class="progress-label">Average Score</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">15%</div>
+                <div class="progress-label">Progress Increase</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Recommended Courses</h3>
+        <div class="learning-path">
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="path-content">
+                    <h4>Web Development Fundamentals</h4>
+                    <p>Based on your interest in programming</p>
+                    <p><strong>Beginner • 8 hours</strong></p>
+                </div>
+                <a href="#" class="btn btn-outline">Enroll</a>
+            </div>
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="path-content">
+                    <h4>Database Design & SQL</h4>
+                    <p>Complements your current learning path</p>
+                    <p><strong>Intermediate • 12 hours</strong></p>
+                </div>
+                <a href="#" class="btn btn-outline">Enroll</a>
+            </div>
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="path-content">
+                    <h4>UI/UX Design Principles</h4>
+                    <p>New area based on your learning style</p>
+                    <p><strong>Beginner • 6 hours</strong></p>
+                </div>
+                <a href="#" class="btn btn-outline">Enroll</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Skill Development Timeline</h3>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">Current</div>
+                <div class="timeline-content">
+                    <h4>Data Structures & Algorithms</h4>
+                    <p>Mastering intermediate concepts</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Next</div>
+                <div class="timeline-content">
+                    <h4>System Design</h4>
+                    <p>Architecting scalable applications</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Future</div>
+                <div class="timeline-content">
+                    <h4>Advanced Algorithms</h4>
+                    <p>Competitive programming preparation</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Additional analytics page animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate timeline items
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 300);
+        });
+    });
+</script>
+{% endblock %}

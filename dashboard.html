@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Readapt{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="welcome-card">
+        <h2>Welcome back, {% if current_user.is_authenticated %}{{ current_user.name }}{% else %}Student{% endif %}!</h2>
+        <p>Your adaptive learning journey continues. Let's pick up where you left off.</p>
+    </div>
+
+    <div class="card">
+        <h3>Learning Progress</h3>
+        <div class="progress-section">
+            <div class="progress-card">
+                <div class="progress-value">75%</div>
+                <div class="progress-label">Overall Progress</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">12</div>
+                <div class="progress-label">Courses</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">42</div>
+                <div class="progress-label">Lessons</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-value">85%</div>
+                <div class="progress-label">Avg. Score</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Your Adaptive Learning Path</h3>
+        <div class="learning-path">
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="path-content">
+                    <h4>Introduction to Programming</h4>
+                    <p>Completed with 92% mastery</p>
+                </div>
+                <div class="path-status status-completed">Completed</div>
+            </div>
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="path-content">
+                    <h4>Data Structures & Algorithms</h4>
+                    <p>Current focus based on your learning pattern</p>
+                    <p><strong>Adaptive Difficulty: Intermediate</strong></p>
+                </div>
+                <div class="path-status status-current">In Progress</div>
+            </div>
+            <div class="path-item">
+                <div class="path-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="path-content">
+                    <h4>Object-Oriented Programming</h4>
+                    <p>Recommended based on your progress</p>
+                </div>
+                <div class="path-status status-upcoming">Up Next</div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Continue Learning</a>
+    </div>
+</div>
+{% endblock %}
