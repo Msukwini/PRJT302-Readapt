@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Readapt{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage your learning platform and monitor user activity</p>
+        <div class="admin-stats-overview">
+            <div class="stat-card admin-stat">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">1,247</div>
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-change positive">+12% this month</div>
+                </div>
+            </div>
+            <div class="stat-card admin-stat">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Active Courses</div>
+                    <div class="stat-change positive">+3 new</div>
+                </div>
+            </div>
+            <div class="stat-card admin-stat">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">Completion Rate</div>
+                    <div class="stat-change positive">+5%</div>
+                </div>
+            </div>
+            <div class="stat-card admin-stat">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">2.3h</div>
+                    <div class="stat-label">Avg. Study Time</div>
+                    <div class="stat-change negative">-0.2h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+            <button class="action-btn">
+                <i class="fas fa-plus"></i>
+                <span>Add Course</span>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-user-plus"></i>
+                <span>Add User</span>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-chart-bar"></i>
+                <span>View Reports</span>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-download"></i>
+                <span>Export Data</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="admin-grid">
+        <!-- Recent Users -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Recent Users</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="user-list">
+                {% for user in recent_users %}
+                <div class="user-item">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">{{ user.name }}</div>
+                        <div class="user-email">{{ user.email }}</div>
+                    </div>
+                    <div class="user-stats">
+                        <div class="user-progress">{{ user.progress }}%</div>
+                        <div class="user-status {{ user.status }}">{{ user.status|title }}</div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn-icon" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon" title="Message">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Course Management -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Course Management</h3>
+                <a href="#" class="view-all">Manage Courses</a>
+            </div>
+            <div class="course-list">
+                {% for course in courses %}
+                <div class="course-item">
+                    <div class="course-icon">
+                        <i class="{{ course.icon }}"></i>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-name">{{ course.name }}</div>
+                        <div class="course-stats">
+                            <span class="stat">{{ course.enrolled }} enrolled</span>
+                            <span class="stat">{{ course.completion }}% completion</span>
+                        </div>
+                    </div>
+                    <div class="course-actions">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ course.completion }}%"></div>
+                        </div>
+                        <button class="btn-icon" title="Edit Course">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- System Analytics -->
+        <div class="card">
+            <h3>System Analytics</h3>
+            <div class="analytics-chart">
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-bar"></i>
+                    <p>User Growth Chart</p>
+                    <div class="chart-stats">
+                        <div class="chart-stat">
+                            <div class="value">+24%</div>
+                            <div class="label">This Month</div>
+                        </div>
+                        <div class="chart-stat">
+                            <div class="value">1.2K</div>
+                            <div class="label">Active Users</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Recent Activity</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="activity-list">
+                {% for activity in recent_activity %}
+                <div class="activity-item">
+                    <div class="activity-icon {{ activity.type }}">
+                        <i class="fas fa-{{ activity.icon }}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-message">{{ activity.message }}</div>
+                        <div class="activity-time">{{ activity.time }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Platform Performance -->
+        <div class="card full-width">
+            <h3>Platform Performance</h3>
+            <div class="performance-grid">
+                <div class="metric">
+                    <div class="metric-value">99.8%</div>
+                    <div class="metric-label">Uptime</div>
+                    <div class="metric-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>0.1%</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">342ms</div>
+                    <div class="metric-label">Avg. Response</div>
+                    <div class="metric-trend negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>15ms</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2.4GB</div>
+                    <div class="metric-label">Storage Used</div>
+                    <div class="metric-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>0.3GB</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">98%</div>
+                    <div class="metric-label">User Satisfaction</div>
+                    <div class="metric-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Admin dashboard specific JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation to stat cards
+        const statCards = document.querySelectorAll('.admin-stat');
+        statCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+
+        // Quick actions animation
+        const actionBtns = document.querySelectorAll('.action-btn');
+        actionBtns.forEach((btn, index) => {
+            setTimeout(() => {
+                btn.style.opacity = '1';
+                btn.style.transform = 'scale(1)';
+            }, index * 50);
+        });
+    });
+</script>
+{% endblock %}
