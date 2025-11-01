@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import numpy as np
-import spacy
+
 
 # Import GPU-enabled flask integration
 from flask_integration import (

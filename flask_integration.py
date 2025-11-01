@@ -2,11 +2,12 @@
 Flask Integration for Readapt ML Models
 Add these routes to your app.py
 """
-from flask import Flask, jsonify, request
-import joblib
-import numpy as np
-import json
+import os
 from pathlib import Path
+
+import joblib
+import json
+import numpy as np
 import spacy
 
 # GPU detection
@@ -56,8 +57,9 @@ try:
     NLP = spacy.load("en_core_web_sm")
     print("✅ spaCy model loaded")
 except:
-    NLP = None
-    print("⚠️  spaCy model not found")
+    print("⚠️  Downloading spaCy model...")
+    os.system("python -m spacy download en_core_web_sm")
+    NLP = spacy.load("en_core_web_sm")
 
 # Try loading GPT-2 (with GPU support)
 try:

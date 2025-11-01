@@ -1,3 +1,4 @@
+
 Flask
 Flask-SQLAlchemy
 Flask-Login
@@ -25,12 +26,12 @@ tqdm
 jsonlines
 
 # For model training
---index-url https://download.pytorch.org/whl/cu118
-torch
+--extra-index-url https://download.pytorch.org/whl/cu128
 torchvision
 torchaudio
+torch
 transformers
 transformers[torch]
 
-# Last one to run 
+# Last one to run:
 # python -m spacy download en_core_web_sm

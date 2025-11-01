@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  readapt:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./datasets:/app/datasets
+      - ./processed_data:/app/processed_data
+      - ./models:/app/models
+      - ./results:/app/results
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - FLASK_ENV=development

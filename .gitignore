@@ -4,3 +4,4 @@ instance/
 datasets/
 processed_data/
 models/
+.venv/
