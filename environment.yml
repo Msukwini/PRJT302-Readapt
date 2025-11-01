@@ -1,0 +1,29 @@
+name: readapt
+channels:
+  - rapidsai
+  - conda-forge
+  - nvidia
+  - defaults
+
+dependencies:
+  # Python version
+  - python
+
+  # GPU/CUDA packages for RAPIDS cuML
+  - cudatoolkit
+  - cuml
+  - cupy
+
+  # Core pip installer
+  - pip
+
+  # Install everything else from requirements.txt
+  - pip:
+      - -r requirements.txt
+
+# Installation instructions:
+# 1. Save this as environment.yml in project root
+# 2. Run: conda env create -f environment.yml
+# 3. Run: conda activate readapt
+# 4. Run: python -m spacy download en_core_web_sm
+# 5. Test: python -c "import cuml; print('cuML ready!')"

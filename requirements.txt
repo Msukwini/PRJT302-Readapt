@@ -1,4 +1,36 @@
-Flask==2.3.3
-Flask-SQLAlchemy==3.0.5
-Flask-Login==0.6.3
-Werkzeug==2.3.7
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Werkzeug
+
+# Core dependencies
+numpy
+pandas
+scikit-learn
+scipy
+matplotlib 
+seaborn
+
+# NLP & Text Processing
+spacy
+nltk
+
+# Kaggle API
+kaggle
+kagglehub
+kagglehub[hf-datasets]
+
+# Data handling
+tqdm
+jsonlines
+
+# For model training
+--index-url https://download.pytorch.org/whl/cu118
+torch
+torchvision
+torchaudio
+transformers
+transformers[torch]
+
+# Last one to run 
+# python -m spacy download en_core_web_sm
