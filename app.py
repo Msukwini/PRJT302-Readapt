@@ -575,6 +575,5 @@ def print_startup_info():
 if __name__ == '__main__':
     init_db()
     print_startup_info()
-    request.url('/setup-admin')
     app.run(debug=True)
     # run_data_pipeline()  # Uncomment if you want to run on startup
