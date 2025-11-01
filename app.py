@@ -63,7 +63,8 @@ class User(UserMixin, db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    """Load user"""
+    return db.session.get(User, int(user_id))
 
 
 # ==========================================
@@ -274,6 +275,7 @@ def api_evaluate_answer():
     })
 
 
+
 # ==========================================
 # WEB ROUTES
 # ==========================================
@@ -350,6 +352,12 @@ def analytics():
                              experimental_results={},
                              system_info={})
 
+@app.route('/generate-quiz')
+@login_required
+def generate_quiz():
+    """Generate adaptive quiz page with GPU-accelerated content"""
+    return render_template('quiz.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -387,7 +395,7 @@ def signup():
         if User.query.filter_by(email=email).first():
             flash('Email already exists', 'error')
         else:
-            hashed_password = generate_password_hash(password, method='sha256')
+            hashed_password = generate_password_hash(password)
             new_user = User(name=name, email=email, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
@@ -415,7 +423,7 @@ def setup_admin():
         # Check if admin user already exists
         admin = User.query.filter_by(email='admin@readapt.com').first()
         if not admin:
-            hashed_password = generate_password_hash('admin123', method='sha256')
+            hashed_password = generate_password_hash('admin123')
             admin_user = User(
                 name='Administrator',
                 email='admin@readapt.com',
@@ -483,6 +491,46 @@ def admin_dashboard():
                          system_info=sys_info,
                          model_stats=stats)
 
+@app.route('/dashboard-enhanced')
+@login_required
+def dashboard_enhanced():
+    """Enhanced dashboard with pre-generated content"""
+    try:
+        # Get model stats with GPU info
+        stats_response = model_stats()
+        stats = json.loads(stats_response.get_data(as_text=True))
+        
+        # Generate personalized content sample
+        user_level = 3  # TODO: Get from user profile in database
+        
+        difficulty_map = DIFFICULTY_MAP_LIST
+        difficulty = difficulty_map.get(user_level, 'intermediate')
+        
+        topics = ['science', 'history', 'technology', 'literature', 'environment']
+        topic = np.random.choice(topics)
+        
+        # Generate a preview passage
+        preview_passage = generate_passage(topic, difficulty, max_length=150)
+        
+        content = {
+            'preview_passage': preview_passage,
+            'preview_topic': topic,
+            'difficulty': difficulty,
+            'student_level': user_level
+        }
+        
+        return render_template('dashboard.html', 
+                             model_stats=stats,
+                             content=content,
+                             gpu_available=stats['gpu_info']['available'])
+    except Exception as e:
+        print(f"Error in enhanced dashboard: {e}")
+        flash('Error loading dashboard content', 'error')
+        return render_template('dashboard.html', 
+                             model_stats={},
+                             content={},
+                             gpu_available=False)
+
 
 # ==========================================
 # INITIALIZATION
@@ -527,5 +575,6 @@ def print_startup_info():
 if __name__ == '__main__':
     init_db()
     print_startup_info()
+    request.url('/setup-admin')
     app.run(debug=True)
     # run_data_pipeline()  # Uncomment if you want to run on startup
