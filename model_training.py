@@ -718,7 +718,7 @@ def main():
         gpt2_metrics = gpt2_trainer.train(
             'processed_data/unsupervised_train_data.json',
             'processed_data/unsupervised_val_data.json',
-            epochs=3,
+            epochs=1,
             batch_size=4
         )
     

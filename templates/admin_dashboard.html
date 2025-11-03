@@ -1,97 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard - Readapt{% endblock %}
+{% block title %}Admin ML Dashboard - Readapt{% endblock %}
 
 {% block content %}
 <div class="container">
-    <!-- Admin Header with ML Stats -->
+    <!-- Admin Header -->
     <div class="admin-header">
-        <h1>Admin Dashboard</h1>
-        <p>GPU-Accelerated Adaptive Learning Platform</p>
+        <h1>🎯 ML System Administration Dashboard</h1>
+        <p>GPU-Accelerated Adaptive Learning Platform - Technical Control Center</p>
         
         <!-- ML System Status -->
         <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 20px;">
-            <h3 style="color: white;">🚀 ML System Status</h3>
+            <h3 style="color: white;">🚀 Machine Learning System Status</h3>
             <div class="performance-grid">
                 <div class="metric">
-                    <div class="metric-value" id="svm-accuracy">--</div>
+                    <div class="metric-value" id="svm-accuracy">Loading...</div>
                     <div class="metric-label">SVM Accuracy</div>
+                    <small style="color: rgba(255,255,255,0.8);">Target: 99%</small>
                 </div>
                 <div class="metric">
-                    <div class="metric-value" id="svm-f1">--</div>
+                    <div class="metric-value" id="svm-f1">Loading...</div>
                     <div class="metric-label">F1-Score</div>
+                    <small style="color: rgba(255,255,255,0.8);">Target: 95.39%</small>
                 </div>
                 <div class="metric">
-                    <div class="metric-value" id="gpu-status">--</div>
+                    <div class="metric-value" id="gpu-status">Checking...</div>
                     <div class="metric-label">GPU Status</div>
+                    <small style="color: rgba(255,255,255,0.8);" id="gpu-name-mini">--</small>
                 </div>
                 <div class="metric">
                     <div class="metric-value" id="test-samples">--</div>
                     <div class="metric-label">Test Samples</div>
+                    <small style="color: rgba(255,255,255,0.8);">Evaluation Set</small>
                 </div>
             </div>
-            <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                <p style="margin: 5px 0;"><strong>GPU:</strong> <span id="gpu-name">Loading...</span></p>
-                <p style="margin: 5px 0;"><strong>Models:</strong> SVM: <span id="svm-loaded">❌</span> | GPT-2: <span id="gpt2-loaded">❌</span></p>
-                <p style="margin: 5px 0;"><strong>GPU Acceleration:</strong> SVM: <span id="svm-gpu">❌</span> | GPT-2: <span id="gpt2-gpu">❌</span></p>
-            </div>
-        </div>
-        
-        <div class="admin-stats-overview">
-            <div class="stat-card admin-stat">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+            
+            <!-- Detailed System Info -->
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div>
+                        <strong>🎮 GPU Device:</strong>
+                        <p style="margin: 5px 0;" id="gpu-full-name">Loading...</p>
+                    </div>
+                    <div>
+                        <strong>💾 GPU Memory:</strong>
+                        <p style="margin: 5px 0;" id="gpu-memory">--</p>
+                    </div>
+                    <div>
+                        <strong>🔧 CUDA Version:</strong>
+                        <p style="margin: 5px 0;" id="cuda-version">--</p>
+                    </div>
+                    <div>
+                        <strong>📊 Training Samples:</strong>
+                        <p style="margin: 5px 0;" id="train-samples">--</p>
+                    </div>
                 </div>
-                <div class="stat-content">
-                    <div class="stat-number">{{ model_stats.get('train_samples', 1247) }}</div>
-                    <div class="stat-label">Training Samples</div>
-                    <div class="stat-change positive">ML Dataset</div>
-                </div>
-            </div>
-            <div class="stat-card admin-stat">
-                <div class="stat-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">45</div>
-                    <div class="stat-label">Active Courses</div>
-                    <div class="stat-change positive">+3 new</div>
-                </div>
-            </div>
-            <div class="stat-card admin-stat">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">{{ "%.1f"|format(model_stats.get('svm_accuracy', 87)) }}%</div>
-                    <div class="stat-label">Model Accuracy</div>
-                    <div class="stat-change positive">Target: 99%</div>
-                </div>
-            </div>
-            <div class="stat-card admin-stat">
-                <div class="stat-icon">
-                    <i class="fas fa-microchip"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="gpu-status-icon">🎮</div>
-                    <div class="stat-label">GPU Enabled</div>
-                    <div class="stat-change positive" id="gpu-info-text">Checking...</div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                    <p style="margin: 0;"><strong>Model Status:</strong></p>
+                    <p style="margin: 5px 0 0 0;">
+                        SVM: <span id="svm-loaded">⏳</span> | 
+                        GPT-2: <span id="gpt2-loaded">⏳</span> | 
+                        SVM GPU: <span id="svm-gpu">⏳</span> | 
+                        GPT-2 GPU: <span id="gpt2-gpu">⏳</span>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Actions -->
+    <!-- ML Quick Actions -->
     <div class="card">
-        <h3>ML Quick Actions</h3>
+        <h3>⚡ ML Testing & Diagnostics</h3>
         <div class="quick-actions">
             <button class="action-btn" onclick="testContentGeneration()">
                 <i class="fas fa-robot"></i>
-                <span>Test Content Gen</span>
+                <span>Test GPT-2 Generation</span>
             </button>
             <button class="action-btn" onclick="testDifficultyPrediction()">
                 <i class="fas fa-brain"></i>
-                <span>Test Difficulty</span>
+                <span>Test SVM Prediction</span>
             </button>
             <button class="action-btn" onclick="viewModelPerformance()">
                 <i class="fas fa-chart-bar"></i>
@@ -103,7 +90,7 @@
             </button>
             <button class="action-btn" onclick="checkSystemInfo()">
                 <i class="fas fa-info-circle"></i>
-                <span>System Info</span>
+                <span>Detailed System Info</span>
             </button>
             <button class="action-btn" onclick="refreshMLStats()">
                 <i class="fas fa-sync"></i>
@@ -113,52 +100,19 @@
     </div>
 
     <div class="admin-grid">
-        <!-- Recent Users -->
+        <!-- Live Content Generation Test -->
         <div class="card">
             <div class="card-header">
-                <h3>Recent Users</h3>
-                <a href="#" class="view-all">View All</a>
-            </div>
-            <div class="user-list">
-                {% for user in recent_users %}
-                <div class="user-item">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">{{ user.name }}</div>
-                        <div class="user-email">{{ user.email }}</div>
-                    </div>
-                    <div class="user-stats">
-                        <div class="user-progress">{{ user.progress }}%</div>
-                        <div class="user-status {{ user.status }}">{{ user.status|title }}</div>
-                    </div>
-                    <div class="user-actions">
-                        <button class="btn-icon" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-icon" title="Message">
-                            <i class="fas fa-envelope"></i>
-                        </button>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- ML Content Test -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Live Content Generation Test</h3>
+                <h3>🧪 Live ML Content Generation</h3>
             </div>
             <div style="padding: 15px;">
                 <div style="margin-bottom: 15px;">
-                    <label>Topic:</label>
+                    <label><strong>Topic:</strong></label>
                     <input type="text" id="test-topic" value="artificial intelligence" 
                            style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label>Difficulty:</label>
+                    <label><strong>Difficulty:</strong></label>
                     <select id="test-difficulty" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                         <option value="easy">Easy</option>
                         <option value="intermediate" selected>Intermediate</option>
@@ -171,18 +125,24 @@
                 <div id="generated-content" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; display: none;">
                     <h4>Generated Passage:</h4>
                     <p id="generated-passage" style="font-size: 14px; line-height: 1.6;"></p>
-                    <h4 style="margin-top: 15px;">Questions:</h4>
+                    <h4 style="margin-top: 15px;">Questions (<span id="gen-q-count">--</span>):</h4>
                     <ul id="generated-questions"></ul>
-                    <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                        <span id="generation-gpu-status"></span>
-                    </p>
+                    <div style="margin-top: 10px; padding: 10px; background: #e8f4f8; border-radius: 4px;">
+                        <p style="margin: 0; font-size: 12px; color: #666;">
+                            <strong>📊 Analysis:</strong><br>
+                            Device: <span id="generation-gpu-status"></span><br>
+                            Response Time: <span id="generation-time"></span>ms<br>
+                            SVM Difficulty: Level <span id="predicted-level">--</span> (<span id="predicted-label">--</span>)<br>
+                            Confidence: <span id="predicted-confidence">--</span>%
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- System Analytics -->
+        <!-- Model Performance Metrics -->
         <div class="card">
-            <h3>System Analytics</h3>
+            <h3>📈 Model Performance Metrics</h3>
             <div class="analytics-chart">
                 <div class="chart-placeholder">
                     <i class="fas fa-chart-bar"></i>
@@ -197,65 +157,92 @@
                             <div class="label">F1-Score</div>
                         </div>
                     </div>
+                    <button class="btn btn-outline" onclick="viewModelPerformance()" style="margin-top: 15px;">
+                        View Full Report
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Recent Activity -->
-        <div class="card">
+        <div class="card full-width">
             <div class="card-header">
-                <h3>Recent Activity</h3>
-                <a href="#" class="view-all">View All</a>
+                <h3>📊 System Logs & Activity</h3>
             </div>
             <div class="activity-list">
-                {% for activity in recent_activity %}
                 <div class="activity-item">
-                    <div class="activity-icon {{ activity.type }}">
-                        <i class="fas fa-{{ activity.icon }}"></i>
+                    <div class="activity-icon system">
+                        <i class="fas fa-cog"></i>
                     </div>
                     <div class="activity-content">
-                        <div class="activity-message">{{ activity.message }}</div>
-                        <div class="activity-time">{{ activity.time }}</div>
+                        <div class="activity-message">ML models initialized successfully</div>
+                        <div class="activity-time">System startup</div>
                     </div>
                 </div>
-                {% endfor %}
+                <div class="activity-item">
+                    <div class="activity-icon course">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-message">SVM model loaded: <span id="log-svm-status">Checking...</span></div>
+                        <div class="activity-time">Model loading</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon course">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-message">GPT-2 model loaded: <span id="log-gpt2-status">Checking...</span></div>
+                        <div class="activity-time">Model loading</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon user">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-message">GPU status: <span id="log-gpu-status">Checking...</span></div>
+                        <div class="activity-time">Hardware check</div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Platform Performance -->
         <div class="card full-width">
-            <h3>Platform Performance</h3>
+            <h3>⚙️ Platform Performance</h3>
             <div class="performance-grid">
                 <div class="metric">
                     <div class="metric-value">99.8%</div>
                     <div class="metric-label">Uptime</div>
                     <div class="metric-trend positive">
                         <i class="fas fa-arrow-up"></i>
-                        <span>0.1%</span>
+                        <span>Stable</span>
                     </div>
                 </div>
                 <div class="metric">
                     <div class="metric-value" id="avg-response">--ms</div>
-                    <div class="metric-label">ML Response Time</div>
+                    <div class="metric-label">Avg Response Time</div>
                     <div class="metric-trend positive">
                         <i class="fas fa-bolt"></i>
-                        <span>GPU</span>
+                        <span id="response-device">--</span>
                     </div>
                 </div>
                 <div class="metric">
-                    <div class="metric-value">2.4GB</div>
-                    <div class="metric-label">Storage Used</div>
+                    <div class="metric-value" id="content-generated">0</div>
+                    <div class="metric-label">Content Generated</div>
                     <div class="metric-trend positive">
                         <i class="fas fa-arrow-up"></i>
-                        <span>0.3GB</span>
+                        <span>This Session</span>
                     </div>
                 </div>
                 <div class="metric">
-                    <div class="metric-value">98%</div>
-                    <div class="metric-label">User Satisfaction</div>
+                    <div class="metric-value" id="predictions-made">0</div>
+                    <div class="metric-label">Predictions Made</div>
                     <div class="metric-trend positive">
                         <i class="fas fa-arrow-up"></i>
-                        <span>2%</span>
+                        <span>This Session</span>
                     </div>
                 </div>
             </div>
@@ -266,11 +253,14 @@
 
 {% block scripts %}
 <script>
+let contentGenCount = 0;
+let predictionCount = 0;
+
 // Load ML stats on page load
 document.addEventListener('DOMContentLoaded', function() {
     loadMLStats();
     
-    // Add animation to stat cards
+    // Animate stat cards
     const statCards = document.querySelectorAll('.admin-stat');
     statCards.forEach((card, index) => {
         setTimeout(() => {
@@ -279,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, index * 100);
     });
 
-    // Quick actions animation
+    // Animate action buttons
     const actionBtns = document.querySelectorAll('.action-btn');
     actionBtns.forEach((btn, index) => {
         setTimeout(() => {
@@ -293,12 +283,18 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadMLStats() {
     try {
         const response = await fetch('/api/model-stats');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
         const data = await response.json();
         
-        // Update accuracy displays
+        // Update main metrics
         document.getElementById('svm-accuracy').textContent = data.svm_accuracy.toFixed(2) + '%';
         document.getElementById('svm-f1').textContent = data.svm_f1_score.toFixed(2) + '%';
         document.getElementById('test-samples').textContent = data.test_samples;
+        document.getElementById('train-samples').textContent = data.train_samples;
         document.getElementById('chart-accuracy').textContent = data.svm_accuracy.toFixed(1) + '%';
         document.getElementById('chart-f1').textContent = data.svm_f1_score.toFixed(1) + '%';
         
@@ -306,25 +302,50 @@ async function loadMLStats() {
         const gpuInfo = data.gpu_info;
         if (gpuInfo.available) {
             document.getElementById('gpu-status').textContent = '✅ Active';
-            document.getElementById('gpu-name').textContent = gpuInfo.name;
-            document.getElementById('gpu-status-icon').textContent = '🎮';
-            document.getElementById('gpu-info-text').textContent = 'Active';
+            document.getElementById('gpu-name-mini').textContent = 'GPU Enabled';
+            document.getElementById('gpu-full-name').textContent = `✅ ${gpuInfo.name}`;
+            document.getElementById('gpu-memory').textContent = `${gpuInfo.gpu_memory_gb} GB`;
+            document.getElementById('cuda-version').textContent = `v${gpuInfo.cuda_version}`;
+            document.getElementById('response-device').textContent = 'GPU';
+            
+            // Logs
+            document.getElementById('log-gpu-status').innerHTML = '<span style="color: #2ecc71;">✅ Available (' + gpuInfo.name + ')</span>';
         } else {
             document.getElementById('gpu-status').textContent = '💻 CPU';
-            document.getElementById('gpu-name').textContent = 'CPU Mode';
-            document.getElementById('gpu-status-icon').textContent = '💻';
-            document.getElementById('gpu-info-text').textContent = 'CPU Mode';
+            document.getElementById('gpu-name-mini').textContent = 'CPU Mode';
+            document.getElementById('gpu-full-name').textContent = '💻 CPU Mode (No GPU detected)';
+            document.getElementById('gpu-memory').textContent = 'N/A';
+            document.getElementById('cuda-version').textContent = 'N/A';
+            document.getElementById('response-device').textContent = 'CPU';
+            
+            // Logs
+            document.getElementById('log-gpu-status').innerHTML = '<span style="color: #f39c12;">⚠️ Not available (CPU mode)</span>';
         }
         
         // Model loading status
-        document.getElementById('svm-loaded').textContent = data.models_loaded.svm ? '✅' : '❌';
-        document.getElementById('gpt2-loaded').textContent = data.models_loaded.gpt2 ? '✅' : '❌';
-        document.getElementById('svm-gpu').textContent = gpuInfo.svm_on_gpu ? '✅' : '❌';
-        document.getElementById('gpt2-gpu').textContent = gpuInfo.gpt2_on_gpu ? '✅' : '❌';
+        const svmLoaded = data.models_loaded.svm;
+        const gpt2Loaded = data.models_loaded.gpt2;
+        
+        document.getElementById('svm-loaded').innerHTML = svmLoaded ? '<span style="color: #2ecc71;">✅ Loaded</span>' : '<span style="color: #e74c3c;">❌ Not loaded</span>';
+        document.getElementById('gpt2-loaded').innerHTML = gpt2Loaded ? '<span style="color: #2ecc71;">✅ Loaded</span>' : '<span style="color: #e74c3c;">❌ Not loaded</span>';
+        document.getElementById('svm-gpu').innerHTML = gpuInfo.svm_on_gpu ? '<span style="color: #2ecc71;">✅ GPU</span>' : '<span style="color: #95a5a6;">💻 CPU</span>';
+        document.getElementById('gpt2-gpu').innerHTML = gpuInfo.gpt2_on_gpu ? '<span style="color: #2ecc71;">✅ GPU</span>' : '<span style="color: #95a5a6;">💻 CPU</span>';
+        
+        // Logs
+        document.getElementById('log-svm-status').innerHTML = svmLoaded ? '<span style="color: #2ecc71;">✅ Ready</span>' : '<span style="color: #e74c3c;">❌ Failed</span>';
+        document.getElementById('log-gpt2-status').innerHTML = gpt2Loaded ? '<span style="color: #2ecc71;">✅ Ready</span>' : '<span style="color: #e74c3c;">❌ Failed</span>';
+        
+        // Update response time estimate
+        document.getElementById('avg-response').textContent = gpuInfo.available ? '<200' : '<800';
         
     } catch (error) {
         console.error('Error loading ML stats:', error);
-        showNotification('Error loading ML statistics', 'error');
+        showNotification('⚠️ Error loading ML statistics. Check if Flask server is running.', 'error');
+        
+        // Set error indicators
+        document.getElementById('svm-accuracy').textContent = 'ERROR';
+        document.getElementById('gpu-status').textContent = '⚠️ Error';
+        document.getElementById('log-gpu-status').innerHTML = '<span style="color: #e74c3c;">❌ Connection failed</span>';
     }
 }
 
@@ -341,39 +362,82 @@ async function generateTestContent() {
     const startTime = performance.now();
     
     try {
-        const response = await fetch('/api/generate-content', {
+        // Generate passage
+        const passageResp = await fetch('/api/ml/generate-passage', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({topic, difficulty})
+            body: JSON.stringify({topic, difficulty, max_length: 200})
         });
         
-        const data = await response.json();
+        if (!passageResp.ok) {
+            throw new Error(`HTTP ${passageResp.status}`);
+        }
+        
+        const passageData = await passageResp.json();
+        
+        // Generate questions
+        const questionsResp = await fetch('/api/ml/generate-questions', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({passage: passageData.passage, num_questions: 3})
+        });
+        
+        if (!questionsResp.ok) {
+            throw new Error(`HTTP ${questionsResp.status}`);
+        }
+        
+        const questionsData = await questionsResp.json();
+        
+        // Predict difficulty
+        const diffResp = await fetch('/api/ml/predict-difficulty', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({text: passageData.passage})
+        });
+        
+        if (!diffResp.ok) {
+            throw new Error(`HTTP ${diffResp.status}`);
+        }
+        
+        const diffData = await diffResp.json();
+        
         const endTime = performance.now();
         const responseTime = Math.round(endTime - startTime);
         
         // Display generated content
-        document.getElementById('generated-passage').textContent = data.passage;
+        document.getElementById('generated-passage').textContent = passageData.passage;
         
         const questionsList = document.getElementById('generated-questions');
         questionsList.innerHTML = '';
-        data.questions.forEach(q => {
+        questionsData.questions.forEach(q => {
             const li = document.createElement('li');
             li.textContent = q;
             li.style.marginBottom = '8px';
             questionsList.appendChild(li);
         });
         
-        const gpuStatus = data.used_gpu ? '🎮 Generated on GPU' : '💻 Generated on CPU';
-        document.getElementById('generation-gpu-status').textContent = 
-            `${gpuStatus} | Response time: ${responseTime}ms`;
+        document.getElementById('gen-q-count').textContent = questionsData.questions.length;
+        
+        const gpuStatus = passageData.used_gpu ? '🎮 GPU' : '💻 CPU';
+        document.getElementById('generation-gpu-status').textContent = gpuStatus;
+        document.getElementById('generation-time').textContent = responseTime;
+        document.getElementById('predicted-level').textContent = diffData.level;
+        document.getElementById('predicted-label').textContent = diffData.label.toUpperCase();
+        document.getElementById('predicted-confidence').textContent = (diffData.confidence * 100).toFixed(1);
         
         document.getElementById('generated-content').style.display = 'block';
         document.getElementById('avg-response').textContent = responseTime + 'ms';
         
-        showNotification('Content generated successfully!', 'success');
+        // Update counters
+        contentGenCount++;
+        predictionCount++;
+        document.getElementById('content-generated').textContent = contentGenCount;
+        document.getElementById('predictions-made').textContent = predictionCount;
+        
+        showNotification('✅ Content generated successfully!', 'success');
     } catch (error) {
         console.error('Error:', error);
-        showNotification('Error generating content', 'error');
+        showNotification('❌ Error generating content: ' + error.message, 'error');
     } finally {
         button.disabled = false;
         button.innerHTML = originalText;
@@ -385,19 +449,26 @@ async function testDifficultyPrediction() {
     const testText = "Artificial intelligence encompasses machine learning, neural networks, and deep learning techniques that enable computers to perform tasks requiring human intelligence.";
     
     try {
-        const response = await fetch('/api/predict-difficulty', {
+        const response = await fetch('/api/ml/predict-difficulty', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({text: testText})
         });
         
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
         const data = await response.json();
         const gpuStatus = data.used_gpu ? '🎮 GPU' : '💻 CPU';
         
-        alert(`Difficulty Prediction:\n\nLevel: ${data.level}\nLabel: ${data.label}\nConfidence: ${(data.confidence * 100).toFixed(1)}%\nDevice: ${gpuStatus}`);
+        predictionCount++;
+        document.getElementById('predictions-made').textContent = predictionCount;
+        
+        alert(`SVM Difficulty Prediction:\n\nLevel: ${data.level}\nLabel: ${data.label.toUpperCase()}\nConfidence: ${(data.confidence * 100).toFixed(1)}%\nDevice: ${gpuStatus}\n\nTest Text: "${testText.substring(0, 60)}..."`);
     } catch (error) {
         console.error('Error:', error);
-        showNotification('Error predicting difficulty', 'error');
+        alert('Error predicting difficulty: ' + error.message);
     }
 }
 
@@ -410,28 +481,40 @@ function viewModelPerformance() {
 async function checkSystemInfo() {
     try {
         const response = await fetch('/api/ml/system-info');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
         const data = await response.json();
         
-        let info = 'ML System Information:\n\n';
-        info += `GPU Available: ${data.gpu_available ? 'Yes' : 'No'}\n`;
+        let info = '🖥️ ML SYSTEM INFORMATION\n\n';
+        info += `GPU Available: ${data.gpu_available ? 'Yes ✅' : 'No ❌'}\n`;
         if (data.gpu_available) {
             info += `GPU Name: ${data.gpu_name}\n`;
             info += `GPU Memory: ${data.gpu_memory_gb} GB\n`;
             info += `CUDA Version: ${data.cuda_version}\n`;
+            info += `PyTorch Version: ${data.torch_version}\n\n`;
+            if (data.gpu_memory_allocated_gb !== undefined) {
+                info += `GPU Memory Allocated: ${data.gpu_memory_allocated_gb} GB\n`;
+                info += `GPU Memory Reserved: ${data.gpu_memory_reserved_gb} GB\n`;
+            }
         }
-        info += `\nSVM on GPU: ${data.svm_on_gpu ? 'Yes' : 'No'}\n`;
-        info += `GPT-2 on GPU: ${data.gpt2_on_gpu ? 'Yes' : 'No'}`;
+        info += `\n📊 MODEL STATUS\n\n`;
+        info += `SVM on GPU: ${data.svm_on_gpu ? 'Yes ✅' : 'No (CPU)'}\n`;
+        info += `GPT-2 on GPU: ${data.gpt2_on_gpu ? 'Yes ✅' : 'No (CPU)'}\n`;
+        info += `cuML Available: ${data.cuml_available ? 'Yes ✅' : 'No'}\n`;
         
         alert(info);
     } catch (error) {
         console.error('Error:', error);
-        showNotification('Error fetching system info', 'error');
+        alert('Error fetching system info: ' + error.message);
     }
 }
 
 // Refresh ML stats
 function refreshMLStats() {
-    showNotification('Refreshing ML statistics...', 'info');
+    showNotification('🔄 Refreshing ML statistics...', 'info');
     loadMLStats();
 }
 

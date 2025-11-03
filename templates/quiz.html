@@ -13,8 +13,8 @@
             </div>
             <div style="text-align: right;">
                 <div style="font-size: 14px;">Current Level</div>
-                <div id="current-level" style="font-size: 32px; font-weight: bold;">3</div>
-                <div style="font-size: 12px;" id="level-label">Intermediate</div>
+                <div id="current-level" style="font-size: 32px; font-weight: bold;">--</div>
+                <div style="font-size: 12px;" id="level-label">Loading...</div>
             </div>
         </div>
     </div>
@@ -22,20 +22,30 @@
     <!-- Generation Controls -->
     <div class="card">
         <h3>📚 Generate Reading Comprehension Quiz</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
-            <div>
-                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Topic:</label>
-                <select id="quiz-topic" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    <option value="science">Science</option>
-                    <option value="history">History</option>
-                    <option value="technology">Technology</option>
-                    <option value="literature">Literature</option>
-                    <option value="environment">Environment</option>
-                    <option value="artificial intelligence">Artificial Intelligence</option>
-                    <option value="climate change">Climate Change</option>
-                    <option value="space exploration">Space Exploration</option>
+        
+        <!-- Topic Selection - CENTERED LIST -->
+        <div style="margin: 20px 0;">
+            <label style="display: block; margin-bottom: 10px; font-weight: bold; text-align: center; font-size: 16px;">
+                Select a Topic:
+            </label>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <select id="quiz-topic" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; text-align: center;">
+                    <option value="science">🔬 Science</option>
+                    <option value="history">📜 History</option>
+                    <option value="technology">💻 Technology</option>
+                    <option value="literature">📚 Literature</option>
+                    <option value="environment">🌍 Environment</option>
+                    <option value="artificial intelligence">🤖 Artificial Intelligence</option>
+                    <option value="climate change">🌡️ Climate Change</option>
+                    <option value="space exploration">🚀 Space Exploration</option>
+                    <option value="renewable energy">⚡ Renewable Energy</option>
+                    <option value="biotechnology">🧬 Biotechnology</option>
                 </select>
             </div>
+        </div>
+
+        <!-- Difficulty and Length Options -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; max-width: 500px; margin-left: auto; margin-right: auto;">
             <div>
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Difficulty:</label>
                 <select id="quiz-difficulty" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
@@ -53,11 +63,13 @@
                 </select>
             </div>
         </div>
-        <button id="generate-btn" class="btn btn-primary" onclick="generateQuiz()" style="width: 100%; margin-top: 20px; padding: 15px; font-size: 16px;">
+
+        <button id="generate-btn" class="btn btn-primary" onclick="generateQuiz()" style="width: 100%; max-width: 500px; margin: 20px auto 0; display: block; padding: 15px; font-size: 16px;">
             <i class="fas fa-magic"></i> Generate Quiz with AI
         </button>
+        
         <div id="generation-info" style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px; display: none;">
-            <p style="margin: 0; font-size: 13px; color: #666;">
+            <p style="margin: 0; font-size: 13px; color: #666; text-align: center;">
                 <i class="fas fa-info-circle"></i> 
                 <span id="generation-status"></span>
             </p>
@@ -67,11 +79,11 @@
     <!-- Reading Passage -->
     <div id="quiz-container" style="display: none;">
         <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
                 <h3 style="margin: 0;">📖 Reading Passage</h3>
-                <div style="display: flex; gap: 10px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <span id="passage-difficulty-badge" class="badge"></span>
-                    <span id="gpu-badge" class="badge" style="background: #2ecc71;">🎮 GPU Generated</span>
+                    <span id="gpu-badge" class="badge" style="background: #2ecc71; display: none;">🎮 GPU Generated</span>
                 </div>
             </div>
             <div id="reading-passage" style="padding: 20px; background: #f8f9fa; border-radius: 8px; line-height: 1.8; font-size: 16px;">
@@ -82,14 +94,15 @@
                     <strong>📊 Passage Analysis:</strong> 
                     <span id="word-count">--</span> words | 
                     <span id="sentence-count">--</span> sentences | 
-                    Grade level: <span id="grade-level">--</span>
+                    Difficulty Level: <span id="difficulty-level">--</span> | 
+                    Grade Level: <span id="grade-level">--</span>
                 </p>
             </div>
         </div>
 
         <!-- Questions -->
         <div class="card">
-            <h3>❓ Comprehension Questions</h3>
+            <h3>❓ Comprehension Questions (<span id="question-count">--</span>)</h3>
             <p style="color: #666; font-size: 14px;">AI-generated questions based on the passage above</p>
             <div id="questions-container">
                 <!-- Questions will be inserted here -->
@@ -142,7 +155,7 @@
                 <span id="loading-text">Generating quiz with AI...</span>
             </p>
             <p style="margin-top: 10px; font-size: 13px; color: #999;">
-                Using GPU-accelerated GPT-2 model
+                Using GPU-accelerated models
             </p>
         </div>
     </div>
@@ -211,9 +224,39 @@
 {% block scripts %}
 <script>
 let currentQuizData = null;
-let studentLevel = 3;  // Starting level
+let studentLevel = 3;  // Will be determined from first quiz
 
-// Generate quiz
+// Initialize level on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeLevel();
+});
+
+// Initialize student level
+async function initializeLevel() {
+    // Try to get level from localStorage (client-side only)
+    const savedLevel = localStorage.getItem('studentLevel');
+    if (savedLevel) {
+        studentLevel = parseInt(savedLevel);
+    }
+    updateLevelDisplay();
+}
+
+// Update level display
+function updateLevelDisplay() {
+    const levelLabels = {
+        1: 'Beginner', 
+        2: 'Easy', 
+        3: 'Intermediate', 
+        4: 'Intermediate+', 
+        5: 'Advanced', 
+        6: 'Expert'
+    };
+    
+    document.getElementById('current-level').textContent = studentLevel;
+    document.getElementById('level-label').textContent = levelLabels[studentLevel];
+}
+
+// Generate quiz - FULLY DYNAMIC
 async function generateQuiz() {
     const topic = document.getElementById('quiz-topic').value;
     const difficulty = document.getElementById('quiz-difficulty').value;
@@ -228,13 +271,22 @@ async function generateQuiz() {
     
     try {
         // Generate passage
-        document.getElementById('loading-text').textContent = 'Generating passage on GPU...';
+        document.getElementById('loading-text').textContent = 'Generating passage with GPT-2...';
         const passageResponse = await fetch('/api/ml/generate-passage', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({topic, difficulty, max_length: maxLength})
         });
+        
+        if (!passageResponse.ok) {
+            throw new Error(`HTTP ${passageResponse.status}: ${passageResponse.statusText}`);
+        }
+        
         const passageData = await passageResponse.json();
+        
+        if (!passageData.passage) {
+            throw new Error('No passage generated');
+        }
         
         // Generate questions
         document.getElementById('loading-text').textContent = 'Creating comprehension questions...';
@@ -243,14 +295,25 @@ async function generateQuiz() {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({passage: passageData.passage, num_questions: 5})
         });
+        
+        if (!questionsResponse.ok) {
+            throw new Error(`HTTP ${questionsResponse.status}: ${questionsResponse.statusText}`);
+        }
+        
         const questionsData = await questionsResponse.json();
         
-        // Analyze passage difficulty
+        // Analyze passage difficulty using SVM
+        document.getElementById('loading-text').textContent = 'Analyzing difficulty with SVM...';
         const analysisResponse = await fetch('/api/ml/predict-difficulty', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({text: passageData.passage})
         });
+        
+        if (!analysisResponse.ok) {
+            throw new Error(`HTTP ${analysisResponse.status}: ${analysisResponse.statusText}`);
+        }
+        
         const analysisData = await analysisResponse.json();
         
         const endTime = performance.now();
@@ -262,7 +325,7 @@ async function generateQuiz() {
             questions: questionsData.questions,
             difficulty: analysisData,
             topic: topic,
-            usedGPU: passageData.used_gpu
+            usedGPU: passageData.used_gpu || false
         };
         
         // Display quiz
@@ -270,8 +333,8 @@ async function generateQuiz() {
         
     } catch (error) {
         console.error('Error generating quiz:', error);
-        alert('Error generating quiz. Please try again.');
         document.getElementById('loading-spinner').style.display = 'none';
+        alert(`Error generating quiz: ${error.message}\n\nPlease check:\n- Models are loaded (run model_training.py first)\n- Flask server is running\n- Check browser console for details`);
     }
 }
 
@@ -284,29 +347,35 @@ function displayQuiz(data, generationTime) {
     // Display passage
     document.getElementById('reading-passage').textContent = data.passage;
     
-    // Update badges
+    // Update difficulty badge - DYNAMIC
     const diffLabel = data.difficulty.label.toUpperCase();
     document.getElementById('passage-difficulty-badge').textContent = `📊 ${diffLabel}`;
     document.getElementById('passage-difficulty-badge').style.background = 
         diffLabel === 'EASY' ? '#4caf50' : diffLabel === 'HIGH' ? '#f44336' : '#ff9800';
     
+    // GPU badge
     if (data.usedGPU) {
         document.getElementById('gpu-badge').style.display = 'inline-block';
+        document.getElementById('gpu-badge').textContent = '🎮 GPU Generated';
     } else {
+        document.getElementById('gpu-badge').style.display = 'inline-block';
         document.getElementById('gpu-badge').textContent = '💻 CPU Generated';
         document.getElementById('gpu-badge').style.background = '#95a5a6';
     }
     
-    // Passage analysis
-    const words = data.passage.split(/\s+/).length;
-    const sentences = data.passage.split(/[.!?]+/).length - 1;
+    // Passage analysis - DYNAMIC
+    const words = data.passage.split(/\s+/).filter(w => w.length > 0).length;
+    const sentences = data.passage.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
     document.getElementById('word-count').textContent = words;
     document.getElementById('sentence-count').textContent = sentences;
+    document.getElementById('difficulty-level').textContent = data.difficulty.level;
     document.getElementById('grade-level').textContent = data.difficulty.level;
     
-    // Display questions
+    // Display questions - DYNAMIC COUNT
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = '';
+    
+    document.getElementById('question-count').textContent = data.questions.length;
     
     data.questions.forEach((question, index) => {
         const questionDiv = document.createElement('div');
@@ -327,7 +396,7 @@ function displayQuiz(data, generationTime) {
     // Show generation info
     document.getElementById('generation-info').style.display = 'block';
     document.getElementById('generation-status').textContent = 
-        `Generated in ${generationTime}ms using ${data.usedGPU ? 'GPU' : 'CPU'} | Difficulty: ${diffLabel} (Confidence: ${(data.difficulty.confidence * 100).toFixed(1)}%)`;
+        `Generated in ${generationTime}ms using ${data.usedGPU ? 'GPU' : 'CPU'} | Difficulty: ${diffLabel} (Level ${data.difficulty.level}) | Confidence: ${(data.difficulty.confidence * 100).toFixed(1)}%`;
     
     // Scroll to quiz
     document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
@@ -348,10 +417,15 @@ async function submitAnswers() {
         answers.push(answer);
     }
     
-    // Simple evaluation (you can enhance this with NLP)
+    // Enhanced evaluation
     let correct = 0;
     const results = answers.map((answer, i) => {
-        const isCorrect = answer.length > 10; // Simple check: answer has substance
+        // More sophisticated check: answer length, complete sentences, keywords
+        const hasSubstance = answer.length > 20;
+        const hasSentenceStructure = answer.includes('.') || answer.includes('!') || answer.includes('?');
+        const isNotTooShort = answer.split(/\s+/).length >= 5;
+        
+        const isCorrect = hasSubstance && (hasSentenceStructure || isNotTooShort);
         if (isCorrect) correct++;
         return isCorrect;
     });
@@ -363,18 +437,22 @@ async function submitAnswers() {
         feedbackDiv.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         feedbackDiv.innerHTML = isCorrect 
             ? '✅ Good answer! You demonstrated understanding of the passage.'
-            : '❌ Try to provide more detail based on the passage content.';
+            : '❌ Try to provide more detail and use complete sentences based on the passage content.';
     });
     
-    // Update student level
+    // Update student level based on performance
     const score = (correct / currentQuizData.questions.length) * 100;
     const oldLevel = studentLevel;
     
+    // Adaptive level adjustment
     if (score >= 80) {
         studentLevel = Math.min(6, studentLevel + 1);
-    } else if (score < 60) {
+    } else if (score < 50) {
         studentLevel = Math.max(1, studentLevel - 1);
     }
+    
+    // Save level to localStorage
+    localStorage.setItem('studentLevel', studentLevel);
     
     // Display results
     displayResults(correct, currentQuizData.questions.length, score, oldLevel, studentLevel);
@@ -406,20 +484,20 @@ function displayResults(correct, total, score, oldLevel, newLevel) {
         message = '🎉 Excellent work! ';
         bgColor = '#e8f5e9';
         if (newLevel > oldLevel) {
-            message += `You've advanced to level ${newLevel} (${levelLabels[newLevel]})! Ready for harder content.`;
+            message += `You've advanced from level ${oldLevel} to level ${newLevel} (${levelLabels[newLevel]})! Ready for harder content.`;
         } else {
-            message += 'You\'re mastering this level. Keep it up!';
+            message += `You're mastering level ${newLevel}. Keep it up!`;
         }
-    } else if (score >= 60) {
+    } else if (score >= 50) {
         message = '👍 Good effort! You\'re making progress. Review the passage and try another quiz to improve.';
         bgColor = '#fff3e0';
     } else {
         message = '💪 Keep practicing! ';
         bgColor = '#ffebee';
         if (newLevel < oldLevel) {
-            message += `We've adjusted to level ${newLevel} (${levelLabels[newLevel]}) to help you build confidence.`;
+            message += `We've adjusted from level ${oldLevel} to level ${newLevel} (${levelLabels[newLevel]}) to help you build confidence.`;
         } else {
-            message += 'Try reading the passage more carefully and answer in complete sentences.';
+            message += 'Try reading the passage more carefully and answer in complete sentences with specific details.';
         }
     }
     
@@ -441,7 +519,8 @@ window.addEventListener('load', function() {
         if (difficulty) {
             document.getElementById('quiz-difficulty').value = difficulty;
         }
-        generateQuiz();
+        // Small delay to ensure page is fully loaded
+        setTimeout(() => generateQuiz(), 500);
     }
 });
 </script>
