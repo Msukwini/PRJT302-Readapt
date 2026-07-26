@@ -189,7 +189,7 @@ def predict_difficulty(text: str) -> dict:
         }
 
 
-def generate_passage(topic: str, difficulty: str = "intermediate", max_length: int = 200) -> str:
+def generate_assage(topic: str, difficulty: str = "intermediate", max_length: int = 200) -> str:
     """
     Generate adaptive reading passage using GPT-2 - FIXED VERSION
     Removes [MASK] tokens and improves generation quality
